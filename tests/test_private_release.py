@@ -37,6 +37,7 @@ class PrivateReleaseTests(unittest.TestCase):
         jobs = self.data['jobs']
         for name in ('macos', 'windows', 'linux', 'flatpak', 'arch', 'freebsd', 'web', 'linux-riscv64', 'server'):
             self.assertIn('version', jobs[name]['needs'])
+        self.assertIn('cmp Cargo.lock /tmp/release-Cargo.lock', jobs['validate-freebsd']['steps'][-1]['with']['run'])
         for name in ('validate-native', 'validate-freebsd'):
             self.assertIn('inputs.validate-only', jobs[name]['if'])
             uses = [step.get('uses', '') for step in jobs[name]['steps']]

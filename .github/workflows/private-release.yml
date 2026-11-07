@@ -1208,5 +1208,6 @@ jobs:
             export GIT_CONFIG_KEY_1="$GIT_CONFIG_KEY_0"
             export GIT_CONFIG_VALUE_0=https://github.com/tomblanchard312/eridu-style.git
             export GIT_CONFIG_VALUE_1=https://github.com/tomblanchard312/eridu-style
+            cp Cargo.lock /tmp/release-Cargo.lock
             cargo metadata --locked --format-version 1 > /tmp/release-metadata.json
-            git diff --exit-code -- Cargo.lock
+            cmp Cargo.lock /tmp/release-Cargo.lock
