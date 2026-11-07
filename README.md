@@ -876,3 +876,18 @@ Only the default branch saves by default. A caller may set
 `workflow_dispatch` runs to save a cache scoped by GitHub to that branch, never a
 pull-request run. Use this selectively to avoid storage churn; sibling branches cannot
 restore each other's caches. Do not pass the input until this workflow change has landed.
+
+## Private dependency release workflow
+
+`private-release.yml` retains the upstream release recipe at
+`3e2ac193fdf93009ef6e88ae34fe1c32340ae039` and adds the consumer's
+`fetch-eridu-style` action to each source build. Callers forward the read-only
+`ERIDU_STYLE_DEPLOY_KEY` secret and supply exact package/source pairs through
+`allowed-git-packages`. Private source and compiled Cargo outputs are excluded
+from public Actions caches. FreeBSD resolves the runner-local checkout after rsync.
+
+`validate-only: true` runs the source allowlist and locked dependency resolution
+on Linux, Windows, macOS and FreeBSD. Version resolution and all dependent release
+builds are skipped, and release creation has a separate validation guard. This
+checks authenticated dependency access. Installer, signing and release acceptance
+still require a regular release build.
